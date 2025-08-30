@@ -19,9 +19,13 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h2, h3 {
+        h2 {
             text-align: center;
-            color: #333;
+            color: blue;
+        }
+        h3 {
+            text-align: center;
+            color: blue;
         }
         label {
             display: block;
@@ -61,7 +65,7 @@
                 const div = document.createElement('div');
                 div.className = 'section';
                 div.innerHTML = `
-                    <h3>Additional Adult ${i}</h3>
+                    <h3 style='color:blue;'>Additional Adult ${i}</h3>
                     <label>Full Legal Name</label><input type="text" name="adult_${i}_name">
                     <label>Date of Birth</label><input type="date" name="adult_${i}_dob">
                     <label>Driver’s License #</label><input type="text" name="adult_${i}_license">
@@ -109,7 +113,7 @@
             <label>Please provide the age of each child</label><textarea name="children_ages"></textarea>
 
             <div class="section">
-                <h3>Rental History</h3>
+                <h3 style="color:blue;">Rental History</h3>
                 <label>Current Address</label><textarea name="current_address"></textarea>
                 <label>Length of Residency</label><input type="text" name="residency_length">
                 <label>Current rent amount</label><input type="number" name="rent_amount">
@@ -123,7 +127,7 @@
             </div>
 
             <div class="section">
-                <h3>Employment & Income Verification</h3>
+                <h3 style="color:blue;">Employment & Income Verification</h3>
                 <label>Current employer</label><input type="text" name="main_employer">
                 <label>Position/Job Title</label><input type="text" name="main_position">
                 <label>Current income</label><input type="number" name="main_income">
@@ -134,7 +138,7 @@
             </div>
 
             <div class="section">
-                <h3>Additional Information</h3>
+                <h3 style="color:blue;">Additional Information</h3>
                 <label>Reference Name</label><input type="text" name="reference_name">
                 <label>Relationship</label><input type="text" name="reference_relationship">
                 <label>Phone Number</label><input type="tel" name="reference_phone">
@@ -149,7 +153,7 @@
             <div id="additional_adults"></div>
 
             <div class="section">
-                <h3>Consent & Authorization</h3>
+                <h3 style="color:blue;">Consent & Authorization</h3>
                 <label><input type="checkbox" class="consent-checkbox" name="consent_contact"> I authorize the landlord to contact my references, employers, and previous landlords.</label>
                 <label><input type="checkbox" class="consent-checkbox" name="consent_credit"> I authorize the landlord to obtain a credit report as part of the screening process.</label>
                 <label><input type="checkbox" class="consent-checkbox" name="consent_certify"> I certify that the information provided is true and complete.</label>
@@ -160,12 +164,45 @@
 
             <label>Applicant Name</label><input type="text" name="applicant_name">
             <label>Date</label><input type="date" name="application_date">
-            <label>Signature</label><input type="text" name="signature">
+            
 
-            <div class="button-group">
+            
+        
+<label>Signature (Draw below)</label>
+<canvas id="signatureCanvas" width="600" height="150"></canvas>
+<script>
+function initSignaturePad() {
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    canvas.addEventListener('mousedown', () => {
+        drawing = true;
+        ctx.beginPath();
+    });
+    canvas.addEventListener('mouseup', () => {
+        drawing = false;
+        ctx.beginPath();
+    });
+    canvas.addEventListener('mousemove', event => {
+        if (!drawing) return;
+        const rect = canvas.getBoundingClientRect();
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+        ctx.lineTo(event.clientX - rect.left, event.clientY - rect.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(event.clientX - rect.left, event.clientY - rect.top);
+    });
+}
+window.onload = initSignaturePad;
+</script>
+
+<div class="button-group">
                 <button type="button" class="pdf-btn" onclick="validateCheckboxesBeforePrint()">Download as PDF</button>
             </div>
-        </form>
+</form>
     </div>
 </body>
 </html>
