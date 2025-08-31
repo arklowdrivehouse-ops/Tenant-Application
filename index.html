@@ -164,45 +164,12 @@
 
             <label>Applicant Name</label><input type="text" name="applicant_name">
             <label>Date</label><input type="date" name="application_date">
-            
+            <label>Signature</label><input type="text" name="signature">
 
-            
-        
-<label>Signature (Draw below)</label>
-<canvas id="signatureCanvas" width="600" height="150"></canvas>
-<script>
-function initSignaturePad() {
-    const canvas = document.getElementById('signatureCanvas');
-    const ctx = canvas.getContext('2d');
-    let drawing = false;
-
-    canvas.addEventListener('mousedown', () => {
-        drawing = true;
-        ctx.beginPath();
-    });
-    canvas.addEventListener('mouseup', () => {
-        drawing = false;
-        ctx.beginPath();
-    });
-    canvas.addEventListener('mousemove', event => {
-        if (!drawing) return;
-        const rect = canvas.getBoundingClientRect();
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#000';
-        ctx.lineTo(event.clientX - rect.left, event.clientY - rect.top);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(event.clientX - rect.left, event.clientY - rect.top);
-    });
-}
-window.onload = initSignaturePad;
-</script>
-
-<div class="button-group">
+            <div class="button-group">
                 <button type="button" class="pdf-btn" onclick="validateCheckboxesBeforePrint()">Download as PDF</button>
             </div>
-</form>
+        </form>
     </div>
 </body>
 </html>
